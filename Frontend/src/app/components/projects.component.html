@@ -1,0 +1,70 @@
+<!-- Projects list page -->
+<div class="projects-container">
+  <!-- Header with logout button -->
+  <div class="header">
+    <h1>My Projects</h1>
+    <button class="btn btn-secondary" (click)="logout()">Logout</button>
+  </div>
+
+  <!-- Loading state -->
+  <div *ngIf="loading" class="loading">Loading projects...</div>
+
+  <!-- Projects list -->
+  <div *ngIf="!loading" class="projects-grid">
+    
+    <!-- Create new project card -->
+    <div class="project-card create-card" (click)="showCreateForm = true" *ngIf="!showCreateForm">
+      <div class="create-icon">+</div>
+      <div>Create New Project</div>
+    </div>
+
+    <!-- Create project form -->
+    <div class="project-card create-form" *ngIf="showCreateForm">
+      <h3>New Project</h3>
+      <input 
+        type="text" 
+        placeholder="Project name" 
+        [(ngModel)]="newProjectName"
+        class="form-control"
+      />
+      <textarea 
+        placeholder="Description (optional)" 
+        [(ngModel)]="newProjectDescription"
+        class="form-control"
+        rows="3"
+      ></textarea>
+      <div class="form-actions">
+        <button class="btn btn-primary" (click)="createProject()">Create</button>
+        <button class="btn btn-secondary" (click)="showCreateForm = false">Cancel</button>
+      </div>
+    </div>
+
+    <!-- Project cards -->
+    <div 
+      *ngFor="let project of projects" 
+      class="project-card"
+      (click)="viewProject(project.id)"
+    >
+      <div class="project-header">
+        <h3>{{ project.name }}</h3>
+        <button 
+          class="delete-btn" 
+          (click)="deleteProject(project.id, $event)"
+          title="Delete project"
+        >
+          ×
+        </button>
+      </div>
+      <p class="project-description">{{ project.description || 'No description' }}</p>
+      <div class="project-stats">
+        <span>{{ project.taskCount }} tasks</span>
+        <span class="date">{{ project.createdAt | date:'short' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div *ngIf="!loading && projects.length === 0 && !showCreateForm" class="empty-state">
+    <p>No projects yet. Create your first project to get started!</p>
+  </div>
+</div>
