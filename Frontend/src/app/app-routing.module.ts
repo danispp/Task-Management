@@ -2,32 +2,26 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login.component';
 import { ProjectsComponent } from './components/projects.component';
+import { ProjectDetailComponent } from './components/project-detail.component';
 import { AuthGuard } from './guards/auth.guard';
 
-
 const routes: Routes = [
-  // Default route - projects
-  { path: '', redirectTo: '/projects', pathMatch: 'full' },
-  
-  // Login route - public
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  
-  // Register route - public
-  { path: 'register', component: LoginComponent }, 
-  
+  { path: 'register', component: LoginComponent },
   { 
     path: 'projects', 
     component: ProjectsComponent,
-    canActivate: [AuthGuard]  // User must be logged in
+    canActivate: [AuthGuard]
   },
-  
-  // Wildcard route - redirect to projects
-  { path: '**', redirectTo: '/projects' }
+  { 
+    path: 'projects/:id', 
+    component: ProjectDetailComponent,
+    canActivate: [AuthGuard]
+  },
+  { path: '**', redirectTo: '/login' }
 ];
 
-/**
- * Configure Angular routing
- */
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

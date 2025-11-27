@@ -8,27 +8,25 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login.component';
 import { ProjectsComponent } from './components/projects.component';
+import { ProjectDetailComponent } from './components/project-detail.component';
 
 import { JwtInterceptor } from './services/jwt.interceptor';
 
-
 @NgModule({
-  // Declare all components
   declarations: [
     AppComponent,
     LoginComponent,
-    ProjectsComponent
+    ProjectsComponent,
+    ProjectDetailComponent
   ],
-  // Import Angular and third-party modules
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    FormsModule,              // For two-way binding
-    ReactiveFormsModule,      // For reactive forms 
-    HttpClientModule,         // For HTTP requests
-    AppRoutingModule          // For routing
+    FormsModule,
+    ReactiveFormsModule,
+    HttpClientModule,
+    AppRoutingModule
   ],
-  // Register HTTP interceptors
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],

@@ -135,3 +135,4 @@
 /home/dani/Desktop/fullstack/Backend/obj/Debug/net8.0/TaskManagement.pdb
 /home/dani/Desktop/fullstack/Backend/obj/Debug/net8.0/TaskManagement.genruntimeconfig.cache
 /home/dani/Desktop/fullstack/Backend/obj/Debug/net8.0/ref/TaskManagement.dll
+/home/dani/Desktop/fullstack/Backend/obj/Debug/net8.0/TaskManagement.sourcelink.json

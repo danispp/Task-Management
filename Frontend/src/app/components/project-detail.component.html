@@ -1,0 +1,79 @@
+<div class="project-detail-container">
+  <div *ngIf="loading" class="loading">Loading...</div>
+
+  <div *ngIf="!loading && project">
+    <div class="header">
+      <button class="btn btn-secondary" (click)="goBack()">← Back</button>
+      <h1>{{ project.name }}</h1>
+    </div>
+
+    <p class="description">{{ project.description || 'No description' }}</p>
+
+    <div class="tasks-section">
+      <div class="section-header">
+        <h2>Tasks</h2>
+        <button class="btn btn-primary" (click)="showCreateTask = true" *ngIf="!showCreateTask">+ Add Task</button>
+      </div>
+
+      <div class="task-form" *ngIf="showCreateTask">
+        <input 
+          type="text" 
+          placeholder="Task title" 
+          [(ngModel)]="newTaskTitle"
+          class="form-control"
+        />
+        <textarea 
+          placeholder="Description (optional)" 
+          [(ngModel)]="newTaskDescription"
+          class="form-control"
+          rows="2"
+        ></textarea>
+        <div class="form-actions">
+          <button class="btn btn-primary" (click)="createTask()">Create</button>
+          <button class="btn btn-secondary" (click)="showCreateTask = false">Cancel</button>
+        </div>
+      </div>
+
+      <div class="tasks-list">
+        <div *ngFor="let task of project.tasks" class="task-card">
+          <div class="task-header">
+            <h3>{{ task.title }}</h3>
+            <button class="delete-btn" (click)="deleteTask(task.id)">×</button>
+          </div>
+          <p class="task-description">{{ task.description || 'No description' }}</p>
+          
+          <div class="task-footer">
+            <div class="task-status">
+              <button 
+                class="status-btn" 
+                [class.active]="task.status === TaskStatus.Todo"
+                (click)="updateTaskStatus(task.id, TaskStatus.Todo)"
+              >
+                Todo
+              </button>
+              <button 
+                class="status-btn" 
+                [class.active]="task.status === TaskStatus.InProgress"
+                (click)="updateTaskStatus(task.id, TaskStatus.InProgress)"
+              >
+                In Progress
+              </button>
+              <button 
+                class="status-btn" 
+                [class.active]="task.status === TaskStatus.Done"
+                (click)="updateTaskStatus(task.id, TaskStatus.Done)"
+              >
+                Done
+              </button>
+            </div>
+            <span class="task-date">{{ task.createdAt | date:'short' }}</span>
+          </div>
+        </div>
+
+        <div *ngIf="project.tasks.length === 0 && !showCreateTask" class="empty-tasks">
+          No tasks yet. Click "Add Task" to create one!
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
