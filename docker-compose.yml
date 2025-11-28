@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: taskmanagement-db
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=YourStrong@Passw0rd123
+      - MSSQL_PID=Developer
+    ports:
+      - "1433:1433"
+    volumes:
+      - sqlserver-data:/var/opt/mssql
+    networks:
+      - taskmanagement-network
+
+  backend:
+    build:
+      context: ./Backend
+      dockerfile: Dockerfile
+    container_name: taskmanagement-backend
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:5000
+      - ConnectionStrings__DefaultConnection=Server=sqlserver,1433;Database=TaskManagementDB;User Id=sa;Password=YourStrong@Passw0rd123;TrustServerCertificate=true;Encrypt=false;
+    ports:
+      - "5000:5000"
+    depends_on:
+      - sqlserver
+    networks:
+      - taskmanagement-network
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: taskmanagement-frontend
+    ports:
+      - "4200:80"
+    depends_on:
+      - backend
+    networks:
+      - taskmanagement-network
+
+volumes:
+  sqlserver-data:
+
+networks:
+  taskmanagement-network:
+    driver: bridge
